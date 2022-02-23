@@ -11,9 +11,18 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 SESSION_NAME = getenv("SESSION_NAME", "session")
 
 # mandatory vars
+""" userbot client part """
+BOT_ID = None
+BOT_NAME = None
+BOT_UNAME = None
+
+""" bot client part"""
+UBOT_ID = None
+UBOT_NAME = None
+UBOT_UNAME = None
+
 OWNER_USERNAME = getenv("OWNER_USERNAME")
 ALIVE_NAME = getenv("ALIVE_NAME")
-BOT_USERNAME = getenv("BOT_USERNAME")
 UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/levina-lab/video-stream")
 UPSTREAM_BRANCH = getenv("UPSTREM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
