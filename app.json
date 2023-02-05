@@ -12,7 +12,7 @@
         "pyrogram"
     ],
     "website": "https://t.me/levinachannel",
-    "repository": "https://github.com/levina-lab/video-stream",
+    "repository": "https://github.com/LOG-AFK-xD/Mahi",
     "success_url": "https://t.me/dlwrml",
     "env": {
         "API_ID": {
@@ -79,7 +79,7 @@
     "formation": {
         "worker": {
             "quantity": 1,
-            "size": "free"
+            "size": "Eco"
         }
     },
     "stack": "container"
