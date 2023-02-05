@@ -71,28 +71,19 @@ async def start_(c: Client, message: Message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(
-                        "➕ Add me to your Group ➕",
-                        url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
-                    )
-                ],
-                [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
-                [
-                    InlineKeyboardButton("📚 Commands", callback_data="command_list"),
-                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}"),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "👥 Official Group", url=f"https://t.me/{GROUP_SUPPORT}"
-                    ),
-                    InlineKeyboardButton(
-                        "📣 Official Channel", url=f"https://t.me/{UPDATES_CHANNEL}"
-                    ),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "🌐 Source Code", url="https://github.com/levina-lab/video-stream"
-                    )
+                    reply_markup=InlineKeyboardMarkup(
+            [
+                [                    
+                    InlineKeyboardButton("📚 Cᴏᴍᴍᴀɴᴅs", callback_data="command_list"),
+                    InlineKeyboardButton("Bᴀsɪᴄ Iɴғᴏ ", callback_data="user_guide")    
+                ],[
+                    InlineKeyboardButton("• Cʜᴀᴛᴢᴏɴᴇ", url=f"https://t.me/LOVE_X_POISONS"),
+                    InlineKeyboardButton(" Cʜᴀᴛᴢᴏɴᴇ •", url=f"https://t.me/UNIQUE_SOCIETY")
+               ],[
+                    InlineKeyboardButton("📨 Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/BLAZE_SUPPORT"),
+                    InlineKeyboardButton(" Uᴘᴅᴀᴛᴇs 📨", url=f"https://t.me/THE_BLAZE_NETWORK")
+                ],[
+                    InlineKeyboardButton("➕ Aᴅᴅ Mᴇ Tᴏ Uʀ Gʀᴏᴜᴘ ➕", url=f"https://t.me/{me_bot.username}?startgroup=true")
                 ],
             ]
         ),
