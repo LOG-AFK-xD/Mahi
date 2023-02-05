@@ -70,9 +70,6 @@ async def start_(c: Client, message: Message):
 """,
         reply_markup=InlineKeyboardMarkup(
             [
-                [
-                    reply_markup=InlineKeyboardMarkup(
-            [
                 [                    
                     InlineKeyboardButton("📚 Cᴏᴍᴍᴀɴᴅs", callback_data="command_list"),
                     InlineKeyboardButton("Bᴀsɪᴄ Iɴғᴏ ", callback_data="user_guide")    
@@ -89,7 +86,6 @@ async def start_(c: Client, message: Message):
         ),
         disable_web_page_preview=True,
     )
-
 
 @Client.on_message(
     command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited
