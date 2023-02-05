@@ -22,7 +22,7 @@ from config import (
 async def start_set(_, query: CallbackQuery):
     BOT_NAME = me_bot.first_name
     await query.answer("home start")
-    await query.edit_message_text(
+    await query.start_set(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
 
