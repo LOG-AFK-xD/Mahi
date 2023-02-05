@@ -29,28 +29,22 @@ async def start_set(_, query: CallbackQuery):
 💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
 🔖 **To know how to use this bot, please click on the » ❓ Basic Guide button!**""",
+
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    reply_markup=InlineKeyboardMarkup(
-            [
-                [                    
-                    InlineKeyboardButton("📚 Cᴏᴍᴍᴀɴᴅs", callback_data="command_list"),
-                    InlineKeyboardButton("Bᴀsɪᴄ Iɴғᴏ ", callback_data="user_guide")    
+                    InlineKeyboardButton("👷🏻 Basic Cmd", callback_data="command_list"),
+                    InlineKeyboardButton("Basic Info 📚", callback_data="user_guide"),
                 ],[
-                    InlineKeyboardButton("• Cʜᴀᴛᴢᴏɴᴇ", url=f"https://t.me/LOVE_X_POISONS"),
-                    InlineKeyboardButton(" Cʜᴀᴛᴢᴏɴᴇ •", url=f"https://t.me/UNIQUE_SOCIETY")
-               ],[
-                    InlineKeyboardButton("📨 Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/BLAZE_SUPPORT"),
-                    InlineKeyboardButton(" Uᴘᴅᴀᴛᴇs 📨", url=f"https://t.me/THE_BLAZE_NETWORK")
+                    InlineKeyboardButton("👷🏻 Support", url=f"https://t.me/{GROUP_SUPPORT}"),
+                    InlineKeyboardButton("Channel 👮🏼", url=f"https://t.me/{UPDATES_CHANNEL}"),
                 ],[
-                    InlineKeyboardButton("➕ Aᴅᴅ Mᴇ Tᴏ Uʀ Gʀᴏᴜᴘ ➕", url=f"https://t.me/{me_bot.username}?startgroup=true")
+                    InlineKeyboardButton("Summon me", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
+              
                 ],
             ]
         ),
-        disable_web_page_preview=True,
-    )
-
+   )
 @Client.on_callback_query(filters.regex("quick_use"))
 @check_blacklist()
 async def quick_set(_, query: CallbackQuery):
