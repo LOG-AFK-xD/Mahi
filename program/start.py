@@ -7,21 +7,19 @@ from time import time
 from config import (
     ALIVE_IMG,
     ALIVE_NAME,
+    BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
-    OWNER_USERNAME,
+    OWNER_NAME,
     UPDATES_CHANNEL,
 )
-from driver.decorators import check_blacklist
 from program import __version__
-from driver.core import bot, me_bot, me_user
-from driver.filters import command
+from driver.veez import user
+from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
-from driver.database.dbusers import add_served_user
-from driver.database.dblockchat import blacklisted_chats
 from pyrogram import Client, filters, __version__ as pyrover
-from pyrogram.errors import FloodWait
+from pyrogram.errors import FloodWait, MessageNotModified
 from pytgcalls import (__version__ as pytover)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
 
@@ -57,58 +55,56 @@ async def _human_time_duration(seconds):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
 )
-@check_blacklist()
-async def start_(c: Client, message: Message):
-    user_id = message.from_user.id
-    await add_served_user(user_id)   
-    await message.reply_photo(      
-        photo=f"https://telegra.ph/file/16f554eacad2ba383a119.jpg",       
-        caption=f""" **☞ ✰Hello friends how are you !**\n
-☞ **✰I'am.. [Music Player Bot](https://t.me/{BOT_USERNAME}) !**
+async def start_(client: Client, message: Message):
+    await message.reply_text(
+        f"""✨ **Welcome {message.from_user.mention()} !**\n
+💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Allows you to play music and video on groups through the Telegram Group video chat!**
 
-🂱 **I Can Play Music In Your Group.Feel free to add me to your groups.!**
+💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
-🔖 **Powered By:- [𐏓〬⃝ ⸙‌ٖٖٖٖٖٖٜٖٖٖٖٖٖ Official ➣LOG⛦ AFK xͮD ⸙‌ٖٖٖٖٖٖٜٖٖٖٖٖٖ ااـ꯭](https://t.me/Official_afk_xD)!**
+🔖 **To know how to use this bot, please click on the » ❓ Basic Guide button!**
 """,
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "🔎 How to Use? Commands Menu.",
-                        callback_data="command_list",
+                        "➕ Add me to your Group ➕",
+                        url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
                     )
-                ], 
-                [            
-                    InlineKeyboardButton("▪ Support", url=f"https://t.me/{GROUP_SUPPORT}"),
-                    InlineKeyboardButton("Updates ▪", url=f"https://t.me/{UPDATES_CHANNEL}"),               
+                ],
+                [InlineKeyboardButton("❓ Basic Guide", callback_data="cbhowtouse")],
+                [
+                    InlineKeyboardButton("📚 Commands", callback_data="cbcmds"),
+                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_NAME}"),
                 ],
                 [
                     InlineKeyboardButton(
-                        "✚ Add me to your Group ✚", url=f"https://t.me/{me_bot.username}?startgroup=true"),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "▪ Chatting xD", url=f"https://t.me/UNIQUE_SOCIETY"
+                        "👥 Official Group", url=f"https://t.me/{GROUP_SUPPORT}"
                     ),
                     InlineKeyboardButton(
-                        "Source Code ▪", url=f"t.me/iTZZ_OFFICIAL"                  
-                    ),               
-                ]
+                        "📣 Official Channel", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    ),
+                ],
+                [
+                    InlineKeyboardButton(
+                        "🌐 Source Code", url="https://github.com/levina-lab/video-stream"
+                    )
+                ],
             ]
         ),
-   )
+        disable_web_page_preview=True,
+    )
+
 
 @Client.on_message(
     command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited
 )
-@check_blacklist()
 async def alive(c: Client, message: Message):
     chat_id = message.chat.id
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
-    BOT_NAME = me_bot.first_name
-    
+
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -120,7 +116,7 @@ async def alive(c: Client, message: Message):
         ]
     )
 
-    alive = f"**Hello {message.from_user.mention()}, i'm {BOT_NAME}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
+    alive = f"**Hello {message.from_user.mention()}, i'm {BOT_NAME}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_NAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
 
     await c.send_photo(
         chat_id,
@@ -131,8 +127,7 @@ async def alive(c: Client, message: Message):
 
 
 @Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
-@check_blacklist()
-async def ping_pong(c: Client, message: Message):
+async def ping_pong(client: Client, message: Message):
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
@@ -140,8 +135,7 @@ async def ping_pong(c: Client, message: Message):
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
-@check_blacklist()
-async def get_uptime(c: Client, message: Message):
+async def get_uptime(client: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
@@ -170,14 +164,9 @@ async def new_chat(c: Client, m: Message):
         pass
     else:
         await add_served_chat(chat_id)
-    ass_uname = me_user.username
-    bot_id = me_bot.id
+    ass_uname = (await user.get_me()).username
+    bot_id = (await c.get_me()).id
     for member in m.new_chat_members:
-        if chat_id in await blacklisted_chats():
-            await m.reply(
-                "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
-            )
-            return await bot.leave_chat(chat_id)
         if member.id == bot_id:
             return await m.reply(
                 "❤️ Thanks for adding me to the **Group** !\n\n"
@@ -197,14 +186,10 @@ async def new_chat(c: Client, m: Message):
             )
 
 
-chat_watcher_group = 10
+chat_watcher_group = 5
 
 @Client.on_message(group=chat_watcher_group)
 async def chat_watcher_func(_, message: Message):
-    if message.from_user:
-        user_id = message.from_user.id
-        await add_served_user(user_id)
-        return
     try:
         userid = message.from_user.id
     except Exception:
