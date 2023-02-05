@@ -17,11 +17,11 @@ from config import (
 )
 
 
-@Client.on_callback_query(filters.regex("home_start"))
+@Client.on_callback_query(filters.regex("cbstart"))
 @check_blacklist()
 async def start_set(_, query: CallbackQuery):
     BOT_NAME = me_bot.first_name
-    await query.answer("home start")
+    await query.answer("cbstart")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
@@ -90,7 +90,7 @@ async def guide_set(_, query: CallbackQuery):
                 [
                     InlineKeyboardButton("» Quick use Guide «", callback_data="quick_use")
                 ],[
-                    InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
+                    InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")
                 ],
             ]
         ),
@@ -118,7 +118,7 @@ All commands can be used with (`! / .`) handler""",
                     InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
                     InlineKeyboardButton("Owner Commands", callback_data="owner_command"),
                 ],[
-                    InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
+                    InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")
                 ],
             ]
         ),
